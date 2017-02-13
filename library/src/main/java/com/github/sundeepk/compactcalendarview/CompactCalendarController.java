@@ -78,6 +78,8 @@ class CompactCalendarController {
     private boolean shouldDrawIndicatorsBelowSelectedDays = false;
     private boolean displayOtherMonthDays = false;
     private boolean shouldSelectFirstDayOfMonthOnScroll = true;
+    private boolean shouldDrawSelectedDayIndicator = true;
+    private boolean shouldDrawTodayIndicator = true;
 
     private CompactCalendarViewListener listener;
     private VelocityTracker velocityTracker = null;
@@ -242,6 +244,14 @@ class CompactCalendarController {
 
     void shouldDrawIndicatorsBelowSelectedDays(boolean shouldDrawIndicatorsBelowSelectedDays){
         this.shouldDrawIndicatorsBelowSelectedDays = shouldDrawIndicatorsBelowSelectedDays;
+    }
+
+    void setShouldDrawSelectedDayIndicator(boolean shouldDrawSelectedDayIndicator) {
+        this.shouldDrawSelectedDayIndicator = shouldDrawSelectedDayIndicator;
+    }
+
+    void setShouldDrawTodayIndicator(boolean shouldDrawTodayIndicator){
+        this.shouldDrawTodayIndicator = shouldDrawTodayIndicator;
     }
 
     void setCurrentDayIndicatorStyle(int currentDayIndicatorStyle) {
@@ -710,8 +720,8 @@ class CompactCalendarController {
         int currentMonth = currentMonthToDrawCalender.get(Calendar.MONTH);
         List<Events> uniqEvents = eventsContainer.getEventsForMonthAndYear(currentMonth, currentMonthToDrawCalender.get(Calendar.YEAR));
 
-        boolean shouldDrawCurrentDayCircle = currentMonth == todayCalender.get(Calendar.MONTH);
-        boolean shouldDrawSelectedDayCircle = currentMonth == currentCalender.get(Calendar.MONTH);
+        boolean shouldDrawCurrentDayCircle = (currentMonth == todayCalender.get(Calendar.MONTH)) && shouldDrawTodayIndicator;
+        boolean shouldDrawSelectedDayCircle = (currentMonth == currentCalender.get(Calendar.MONTH)) && shouldDrawSelectedDayIndicator;
 
         int todayDayOfMonth = todayCalender.get(Calendar.DAY_OF_MONTH);
         int currentYear = todayCalender.get(Calendar.YEAR);
@@ -857,9 +867,9 @@ class CompactCalendarController {
                 }
             } else {
                 int day = ((dayRow - 1) * 7 + dayColumn + 1) - firstDayOfMonth;
-                if (currentCalender.get(Calendar.DAY_OF_MONTH) == day && isSameMonthAsCurrentCalendar && !isAnimatingWithExpose) {
+                if (shouldDrawSelectedDayIndicator && currentCalender.get(Calendar.DAY_OF_MONTH) == day && isSameMonthAsCurrentCalendar && !isAnimatingWithExpose) {
                     drawDayCircleIndicator(currentSelectedDayIndicatorStyle, canvas, xPosition, yPosition, currentSelectedDayBackgroundColor);
-                } else if (isSameYearAsToday && isSameMonthAsToday && todayDayOfMonth == day && !isAnimatingWithExpose) {
+                } else if (shouldDrawTodayIndicator && isSameYearAsToday && isSameMonthAsToday && todayDayOfMonth == day && !isAnimatingWithExpose) {
                     // TODO calculate position of circle in a more reliable way
                     drawDayCircleIndicator(currentDayIndicatorStyle, canvas, xPosition, yPosition, currentDayBackgroundColor);
                 }

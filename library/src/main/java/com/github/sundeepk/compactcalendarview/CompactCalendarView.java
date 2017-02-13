@@ -178,6 +178,14 @@ public class CompactCalendarView extends View {
         compactCalendarController.setShouldDrawDaysHeader(shouldDrawDaysHeader);
     }
 
+    public  void setShouldDrawSelectedDayIndicator(boolean shouldDrawSelectedDayIndicator){
+        compactCalendarController.setShouldDrawSelectedDayIndicator(shouldDrawSelectedDayIndicator);
+    }
+
+    public  void setShouldDrawTodayIndicator(boolean shouldDrawTayIndicator){
+        compactCalendarController.setShouldDrawTodayIndicator(shouldDrawTayIndicator);
+    }
+
     /**
      * see {@link #addEvent(Event, boolean)} when adding single events
      * or {@link #addEvents(java.util.List)}  when adding multiple events
